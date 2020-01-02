@@ -1,8 +1,14 @@
 import request from 'supertest';
 import faker from 'faker';
+import {Application} from "express";
+import App from "../src/app";
 
-import app from "../src/app";
+let app: Application;
+
 describe('User Routes', () => {
+    beforeAll(async () => {
+       app = await App.getApplication();
+    });
     describe("POST /users", () => {
         it('should create user', async () => {
             const result = await request(app).post("/users").send({email: faker.internet.email()});

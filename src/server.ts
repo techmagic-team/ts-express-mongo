@@ -1,6 +1,6 @@
 // import errorHandler from "errorhandler";
 
-import app from "./app";
+import App from "./app";
 
 /**
  * Error Handler. Provides full stack - remove for production
@@ -10,13 +10,18 @@ import app from "./app";
 /**
  * Start Express server.
  */
-const server = app.listen(app.get("port"), () => {
-    console.log(
-        "  App is running at http://localhost:%d in %s mode",
-        app.get("port"),
-        app.get("env")
-    );
-    console.log("  Press CTRL-C to stop\n");
+
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Application specific logging, throwing an error, or other logic here
 });
 
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception Error:', err);
+});
+
+
+const app = new App();
+const server = app.start();
 export default server;
